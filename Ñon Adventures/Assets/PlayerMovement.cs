@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
-{ 
+{
+    public CharacterController2D controller;
 
+    public float speed = 40f;
     float horizontalMove = 0f;
-    public float speed = 0f;
-
-    public CharacterController2D controller;    
-    
-    // This script is meant to check player inputs for movement.
+    public bool jump = false;
+    // Start is called before the first frame update
     void Start()
     {
         
@@ -20,11 +19,15 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
+
+        if (Input.GetButtonDown("Jump")){
+            jump = true;
+        }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        //Movement
-        controller.Move(horizontalMove * Time.fixedDeltaTime, false, false);
+        controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
+        jump = false;
     }
 }
